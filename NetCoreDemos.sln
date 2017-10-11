@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo1", "Demo1\Demo1.csproj", "{6F555BCA-D2A8-4FA7-8ABC-13CD570D948B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{41A0C98D-A94A-4141-B717-B82228BF525F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builders", "Builders", "{418C341C-95B9-43CE-B2F9-1E33368AA4BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D4DE1064-3151-4535-9262-FB4B8BBDD4D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHost", "ServiceHost\ServiceHost.csproj", "{6A941FD9-30B4-4AC9-AC47-09C7702FC140}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHost.Abstractions", "ServiceHost.Abstractions\ServiceHost.Abstractions.csproj", "{16561C26-E13A-452F-84F2-11DA908CD0F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nssm", "nssm", "{E535342D-4405-4083-B1E4-7F2FC859874F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win32", "win32", "{55D7AF66-E233-49F2-84E7-C643E8FDB2D2}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\nssm\win32\nssm.exe = Tools\nssm\win32\nssm.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win64", "win64", "{43999904-FB2D-43CB-B88C-17F333A86616}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\nssm\win64\nssm.exe = Tools\nssm\win64\nssm.exe
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo2", "Demo2\Demo2.csproj", "{D168D1C9-D07A-497A-92CD-05D9AA4395D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F555BCA-D2A8-4FA7-8ABC-13CD570D948B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F555BCA-D2A8-4FA7-8ABC-13CD570D948B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F555BCA-D2A8-4FA7-8ABC-13CD570D948B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F555BCA-D2A8-4FA7-8ABC-13CD570D948B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A941FD9-30B4-4AC9-AC47-09C7702FC140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A941FD9-30B4-4AC9-AC47-09C7702FC140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A941FD9-30B4-4AC9-AC47-09C7702FC140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A941FD9-30B4-4AC9-AC47-09C7702FC140}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16561C26-E13A-452F-84F2-11DA908CD0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16561C26-E13A-452F-84F2-11DA908CD0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16561C26-E13A-452F-84F2-11DA908CD0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16561C26-E13A-452F-84F2-11DA908CD0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D168D1C9-D07A-497A-92CD-05D9AA4395D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D168D1C9-D07A-497A-92CD-05D9AA4395D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D168D1C9-D07A-497A-92CD-05D9AA4395D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D168D1C9-D07A-497A-92CD-05D9AA4395D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A941FD9-30B4-4AC9-AC47-09C7702FC140} = {418C341C-95B9-43CE-B2F9-1E33368AA4BD}
+		{16561C26-E13A-452F-84F2-11DA908CD0F5} = {418C341C-95B9-43CE-B2F9-1E33368AA4BD}
+		{E535342D-4405-4083-B1E4-7F2FC859874F} = {41A0C98D-A94A-4141-B717-B82228BF525F}
+		{55D7AF66-E233-49F2-84E7-C643E8FDB2D2} = {E535342D-4405-4083-B1E4-7F2FC859874F}
+		{43999904-FB2D-43CB-B88C-17F333A86616} = {E535342D-4405-4083-B1E4-7F2FC859874F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4B24354-6CCD-4832-9B2C-E9C548188EB1}
+	EndGlobalSection
+EndGlobal
