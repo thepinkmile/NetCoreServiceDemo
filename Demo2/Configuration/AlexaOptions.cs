@@ -2,7 +2,7 @@
 
 namespace Demo2.Configuration
 {
-    public class AmqpOptions
+    public class AlexaOptions
     {
         public string Address { get; set; } = "amqps://guest:guest@locahost";
 

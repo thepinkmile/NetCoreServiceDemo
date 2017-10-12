@@ -12,12 +12,13 @@ namespace Demo2
             new ServiceHostBuilder()
                 // Add Configuration sources
                 .AddEnvironmentConfiguration()
-                .AddIniConfiguration("amqp.ini")
-                .AddJsonConfiguration("appsettings.json")
+                .AddIniConfiguration("amqp.ini", false, true)
+                .AddJsonConfiguration("appsettings.json", false, true)
                 .AddCommandLine(args)
 
                 // Add configuration Types to DI
-                .Configure<AmqpOptions>("AMQP")
+                .Configure<AmqpOptions>("SiriAmqp")
+                .Configure<AlexaOptions>("AlexaAmqp")
 
                 // Add Logging services
                 .AddLogging("Loging", builder =>
@@ -30,8 +31,8 @@ namespace Demo2
                 })
 
                 // Configure the services to run
-                .IncludeService<TestService>()
-                .IncludeService<TestReceiverService>()
+                .IncludeService<SiriService>()
+                .IncludeService<AlexaService>()
 
                 // Build the ServiceHost
                 .Build()

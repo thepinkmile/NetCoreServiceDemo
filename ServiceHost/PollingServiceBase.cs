@@ -40,7 +40,7 @@ namespace ServiceHost
             {
                 while (!CancellationToken.IsCancellationRequested)
                 {
-                    Execute();
+                    Execute().Wait();
                 }
             }
             finally
@@ -49,7 +49,7 @@ namespace ServiceHost
             }
         }
 
-        public abstract void Execute();
+        public abstract Task Execute();
 
         #endregion
 
