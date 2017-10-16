@@ -39,24 +39,25 @@ namespace Demo1
             var subscription = configuration["AMQP:Subscription"];
 
             // setup amqp session
-            var connection = new Connection(new Address(amqpConnection));
+            var connection = new Connection(new Address(amqpConnection), SaslProfile.Anonymous, null, null);
             var session = new Session(connection);
 
             // sending messages
-            var sender = new SenderLink(session, senderId, $"{topicId}{{create: always}}");
+            var sender = new SenderLink(session, senderId, topicId);
             logger.LogDebug("Sending Message...");
             var message = new Message("Hello World")
             {
-                Properties = new Properties { MessageId = Guid.NewGuid().ToString("N") },
-                ApplicationProperties =
-                    new ApplicationProperties { ["Message.Type.FullName"] = typeof(string).FullName }
+                Properties = new Properties
+                {
+                    MessageId = Guid.NewGuid().ToString("N")
+                }
             };
             sender.Send(message);
             sender.Close();
 
             // receiving messages
             logger.LogDebug("Receiving Message...");
-            var consumer = new ReceiverLink(session, receiverId, $"{topicId}/Subscriptions/{subscription}");
+            var consumer = new ReceiverLink(session, $"{receiverId}{{create: always}}", $"{topicId}/Subscriptions/{subscription}");
             var msg = consumer.Receive();
             consumer.Accept(msg);
             consumer.Close();
