@@ -17,8 +17,16 @@ namespace Demo1
         public static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddIniFile("msgsettings.ini", true, true)
+                .AddJsonFile(
+                    "appsettings.json",
+                    optional: false,
+                    reloadOnChange: true
+                    )
+                .AddIniFile(
+                    "msgsettings.ini",
+                    true, // Optional
+                    true // reload on change
+                    )
                 .AddCommandLine(args)
                 .Build();
 
