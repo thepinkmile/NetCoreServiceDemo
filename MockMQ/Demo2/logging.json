@@ -1,9 +1,4 @@
 ﻿{
-  "Broker": {
-    "QueueName": "sender-queue",
-    "SenderName": "sender",
-    "ReceiverName":  "receiver" 
-  },
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {

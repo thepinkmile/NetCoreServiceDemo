@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MockMQ.Abstractions
@@ -8,15 +9,15 @@ namespace MockMQ.Abstractions
     {
         #region Async
 
-        Task<IMessage> GetMessageAsync(string queueName);
+        Task<IMessage> GetMessageAsync(string queueName, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<IMessage> GetMessageAsync(string queueName, Func<IDictionary<string, object>, bool> predicateFunc);
+        Task<IMessage> GetMessageAsync(string queueName, Func<IDictionary<string, object>, bool> predicateFunc, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task AcceptMessageAsync(IMessage message);
+        Task AcceptMessageAsync(IMessage message, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task RejectMessageAsync(IMessage message);
+        Task RejectMessageAsync(IMessage message, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task SendMessageAsync(string queueName, IMessage message);
+        Task SendMessageAsync(string queueName, IMessage message, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion
 

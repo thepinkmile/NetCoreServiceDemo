@@ -11,11 +11,11 @@ using ServiceHost;
 
 namespace Demo2.Services
 {
-    public class AlexaService : PollingServiceBase
+    public class CortanaService : PollingServiceBase
     {
         #region Constructors
 
-        public AlexaService(IServiceProvider dependencies, IOptions<AlexaOptions> options, ILogger<AlexaService> logger)
+        public CortanaService(IServiceProvider dependencies, IOptions<CortanaOptions> options, ILogger<CortanaService> logger)
             : base(dependencies)
         {
             _options = options;
@@ -27,7 +27,7 @@ namespace Demo2.Services
 
         #region Properties
 
-        private AlexaOptions Options => _options?.Value ?? new AlexaOptions();
+        private CortanaOptions Options => _options?.Value ?? new CortanaOptions();
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace Demo2.Services
 
         public override async Task Execute()
         {
-            _logger.LogInformation("Alexa Executing...");
+            _logger.LogInformation("Cortana Executing...");
 
             try
             {
@@ -48,7 +48,7 @@ namespace Demo2.Services
                     // Retrieve Message
                     var message = await broker.GetMessageAsync(Options.QueueName, CancellationToken);
                     if (message == null) return;
-                    _logger.LogInformation($"Message Received by Alexa: '{message.Body}'");
+                    _logger.LogInformation($"Message Received by Cortana: '{message.Body}'");
 
                     // Send response
                     var delivery = message.Body.Replace("Call ", "", true, CultureInfo.InvariantCulture);
@@ -59,7 +59,7 @@ namespace Demo2.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error executing Alexa Service");
+                _logger.LogError(e, "Error executing Cortana Service");
             }
         }
 
@@ -69,9 +69,9 @@ namespace Demo2.Services
 
         private readonly IServiceProvider _services;
 
-        private readonly IOptions<AlexaOptions> _options;
+        private readonly IOptions<CortanaOptions> _options;
 
-        private readonly ILogger<AlexaService> _logger;
+        private readonly ILogger<CortanaService> _logger;
 
         #endregion
     }

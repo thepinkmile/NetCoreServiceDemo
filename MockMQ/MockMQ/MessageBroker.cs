@@ -25,9 +25,11 @@ namespace MockMQ
 
         #region Async Methods
 
-        public Task<IMessage> GetMessageAsync(string queueName)
+        public Task<IMessage> GetMessageAsync(string queueName, CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var queue = EnsureMessageQueue(queueName);
+            cancellationToken.ThrowIfCancellationRequested();
             while (true)
             {
                 lock (queue)
@@ -39,13 +41,17 @@ namespace MockMQ
                         return Task.FromResult(message);
                     }
                 }
+                cancellationToken.ThrowIfCancellationRequested();
                 Thread.Sleep(ThreadSleepTimeout);
+                cancellationToken.ThrowIfCancellationRequested();
             }
         }
 
-        public Task<IMessage> GetMessageAsync(string queueName, Func<IDictionary<string, object>, bool> predicateFunc)
+        public Task<IMessage> GetMessageAsync(string queueName, Func<IDictionary<string, object>, bool> predicateFunc, CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var queue = EnsureMessageQueue(queueName);
+            cancellationToken.ThrowIfCancellationRequested();
             while (true)
             {
                 lock (queue)
@@ -58,26 +64,33 @@ namespace MockMQ
                         return Task.FromResult(message);
                     }
                 }
+                cancellationToken.ThrowIfCancellationRequested();
                 Thread.Sleep(ThreadSleepTimeout);
+                cancellationToken.ThrowIfCancellationRequested();
             }
         }
 
-        public Task AcceptMessageAsync(IMessage message)
+        public Task AcceptMessageAsync(IMessage message, CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             if (message.MessageBroker != this || !_queues.ContainsKey(message.QueueName)) return Task.CompletedTask;
             var queue = _queues[message.QueueName];
+            cancellationToken.ThrowIfCancellationRequested();
             lock (queue)
             {
                 if (queue.TryPeek(out var frontMessage) && frontMessage.Equals(message))
                     queue.Dequeue();
             }
+            cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
 
-        public Task RejectMessageAsync(IMessage message)
+        public Task RejectMessageAsync(IMessage message, CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             if (message.MessageBroker != this || !_queues.ContainsKey(message.QueueName)) return Task.CompletedTask;
             var queue = _queues[message.QueueName];
+            cancellationToken.ThrowIfCancellationRequested();
             lock (queue)
             {
                 // ReSharper disable once InvertIf
@@ -87,16 +100,20 @@ namespace MockMQ
                     message.QueueName = null;
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
 
-        public Task SendMessageAsync(string queueName, IMessage message)
+        public Task SendMessageAsync(string queueName, IMessage message, CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var queue = EnsureMessageQueue(queueName);
+            cancellationToken.ThrowIfCancellationRequested();
             lock (queue)
             {
                 queue.Enqueue(message);
             }
+            cancellationToken.ThrowIfCancellationRequested();
             return Task.CompletedTask;
         }
 

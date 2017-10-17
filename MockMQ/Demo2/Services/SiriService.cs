@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Threading;
+using System.Globalization;
 using System.Threading.Tasks;
-using Amqp;
 using Demo2.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MockMQ.Abstractions;
 using ServiceHost;
+using MockMQ;
 
 namespace Demo2.Services
 {
@@ -13,18 +15,19 @@ namespace Demo2.Services
     {
         #region Constructors
 
-        public SiriService(IServiceProvider dependencies, IOptions<AmqpOptions> options, ILogger<SiriService> logger)
+        public SiriService(IServiceProvider dependencies, IOptions<SiriOptions> options, ILogger<SiriService> logger)
             : base(dependencies)
         {
-            var options1 = options?.Value ?? new AmqpOptions();
+            _options = options;
             _logger = logger;
-
-            var address = new Address(options1.Address);
-            _amqpConnection = new Connection(address);
-            _amqpSession = new Session(_amqpConnection);
-            _amqpReceiverLink = new ReceiverLink(_amqpSession, options1.ReceiverSubscriptionId, options1.Subscription);
-            _amqpSenderLink = new SenderLink(_amqpSession, options1.SenderSubscriptionId, options1.Topic);
+            _services = dependencies;
         }
+
+        #endregion
+
+        #region Properties
+
+        private SiriOptions Options => _options?.Value ?? new SiriOptions();
 
         #endregion
 
@@ -34,43 +37,41 @@ namespace Demo2.Services
         {
             _logger.LogInformation("Siri Executing...");
 
-            var message = new Message("Alexa, Call me...");
-            await _amqpSenderLink.SendAsync(message);
-            CancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                using (var scopedServices = _services.CreateScope())
+                {
+                    var provider = scopedServices.ServiceProvider;
 
-            var reply = await _amqpReceiverLink.ReceiveAsync();
-            CancellationToken.ThrowIfCancellationRequested();
-            // TODO: add message validation here
-            _amqpReceiverLink.Accept(reply);
-            _logger.LogWarning($"Message Received by Siri: '{reply.Body}'");
-        }
+                    var broker = provider.GetRequiredService<IMessageBroker>();
 
-        #endregion
+                    // Retrieve Message
+                    var message = await broker.GetMessageAsync(Options.QueueName, CancellationToken);
+                    if (message == null) return;
+                    _logger.LogInformation($"Message Received by Siri: '{message.Body}'");
 
-        #region IDispose
-
-        public override void Dispose()
-        {
-            if (!_amqpReceiverLink.IsClosed) _amqpReceiverLink.Close();
-            if (!_amqpSenderLink.IsClosed) _amqpSenderLink.Close();
-            if (!_amqpSession.IsClosed) _amqpSession.Close();
-            if (!_amqpConnection.IsClosed) _amqpConnection.Close();
-            base.Dispose();
+                    // Send response
+                    var delivery = message.Body.Replace("Call ", "", true, CultureInfo.InvariantCulture);
+                    var response = new Message{ Body = $"Call {Options.SendToQueue}" };
+                    _logger.LogInformation("Sending response");
+                    await broker.SendMessageAsync(delivery, response);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error executing Siri Service");
+            }
         }
 
         #endregion
 
         #region Fields
 
+        private readonly IServiceProvider _services;
+
+        private readonly IOptions<SiriOptions> _options;
+
         private readonly ILogger<SiriService> _logger;
-
-        private readonly Session _amqpSession;
-
-        private readonly Connection _amqpConnection;
-
-        private readonly ReceiverLink _amqpReceiverLink;
-
-        private readonly SenderLink _amqpSenderLink;
 
         #endregion
     }

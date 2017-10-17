@@ -6,21 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AMQPNetLite.Core" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MockMQ.Abstractions\MockMQ.Abstractions.csproj" />
+    <ProjectReference Include="..\MockMQ\MockMQ.csproj" />
     <ProjectReference Include="..\ServiceHost.Abstractions\ServiceHost.Abstractions.csproj" />
     <ProjectReference Include="..\ServiceHost\ServiceHost.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="amqp.ini">
+    <None Update="siri.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="appsettings.json">
+    <None Update="alexa.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

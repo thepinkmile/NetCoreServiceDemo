@@ -1,0 +1,6 @@
+﻿{
+  "Alexa": {
+    "QueueName": "alexa",
+    "SendToQueue": "siri"
+  }
+}

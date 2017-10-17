@@ -1,6 +1,6 @@
 ﻿namespace Demo2.Configuration
 {
-    public class AlexaOptions : ServiceOptions
+    public class CortanaOptions : ServiceOptions
     {
     }
 }
