@@ -14,5 +14,9 @@ namespace ServiceHost.Abstractions
         void Start();
 
         void Stop();
+
+        void RegisterServiceTask(Task task);
+
+        void UnregisterServiceTask(Task task);
     }
 }

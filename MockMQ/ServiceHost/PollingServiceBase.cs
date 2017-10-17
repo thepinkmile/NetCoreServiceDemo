@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using ServiceHost.Abstractions;
 
 namespace ServiceHost
 {
@@ -11,22 +13,27 @@ namespace ServiceHost
         protected PollingServiceBase(IServiceProvider dependencies)
             : base(dependencies)
         {
+            _host = dependencies.GetRequiredService<IServiceHost>();
         }
 
         #endregion
 
         #region ServiceBase Methods
-        
+
         public sealed override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
+            IsRunning = true;
             _task = Task.Run(() => Run(), CancellationToken);
+            _task.GetAwaiter().OnCompleted(() => StopAsync().Wait(CancellationToken.None));
+            _host.RegisterServiceTask(_task);
         }
 
         public sealed override async Task StopAsync()
         {
             await base.StopAsync();
-            await _task;
+            _host.UnregisterServiceTask(_task);
+            IsRunning = false;
         }
 
         #endregion
@@ -35,7 +42,6 @@ namespace ServiceHost
 
         public void Run()
         {
-            IsRunning = true;
             try
             {
                 while (!CancellationToken.IsCancellationRequested)
@@ -45,7 +51,7 @@ namespace ServiceHost
             }
             finally
             {
-                IsRunning = false;
+                StopAsync().Wait();
             }
         }
 
@@ -56,6 +62,8 @@ namespace ServiceHost
         #region Fields
 
         private Task _task;
+
+        private IServiceHost _host;
 
         #endregion
     }

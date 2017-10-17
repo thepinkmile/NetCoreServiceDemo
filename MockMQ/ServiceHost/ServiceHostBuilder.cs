@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -42,7 +41,7 @@ namespace ServiceHost
         {
             if (serviceType.IsInterface)
                 throw new ArgumentException("Service Type is not a vaild IService.");
-            _serviceTypes.Append(serviceType);
+            _serviceTypes.Add(serviceType);
         }
 
         public IServiceHost Build()
@@ -50,8 +49,14 @@ namespace ServiceHost
             var config = Configuration.Build();
             Dependencies.TryAddSingleton(config);
             Dependencies.TryAddSingleton<IConfiguration>(config);
+            Dependencies.TryAddSingleton<IServiceHost, ServiceHost>();
+            foreach (var serviceType in _serviceTypes)
+            {
+                Dependencies.TryAddTransient(serviceType);
+            }
+            var provider = Dependencies.BuildServiceProvider();
 
-            var host = new ServiceHost(Dependencies.BuildServiceProvider());
+            var host = provider.GetRequiredService<IServiceHost>();
             foreach (var serviceType in _serviceTypes)
             {
                 host.AddTaskService(serviceType);
@@ -63,7 +68,7 @@ namespace ServiceHost
 
         #region Fields
 
-        private readonly IEnumerable<Type> _serviceTypes;
+        private readonly List<Type> _serviceTypes;
 
         #endregion
     }

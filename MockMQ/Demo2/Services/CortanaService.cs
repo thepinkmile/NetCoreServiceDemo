@@ -35,7 +35,7 @@ namespace Demo2.Services
 
         public override async Task Execute()
         {
-            _logger.LogInformation("Cortana Executing...");
+            _logger.LogDebug("Cortana Executing...");
 
             try
             {
@@ -48,12 +48,13 @@ namespace Demo2.Services
                     // Retrieve Message
                     var message = await broker.GetMessageAsync(Options.QueueName, CancellationToken);
                     if (message == null) return;
+                    await broker.AcceptMessageAsync(message);
                     _logger.LogInformation($"Message Received by Cortana: '{message.Body}'");
 
                     // Send response
                     var delivery = message.Body.Replace("Call ", "", true, CultureInfo.InvariantCulture);
                     var response = new Message { Body = $"Call {Options.SendToQueue}" };
-                    _logger.LogInformation("Sending response");
+                    _logger.LogDebug("Cortana is sending response");
                     await broker.SendMessageAsync(delivery, response);
                 }
             }

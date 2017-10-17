@@ -18,7 +18,7 @@ namespace Demo2
             var testMessage = new Message{ Body = "Call siri" };
             broker.SendMessage("cortana", testMessage);
 
-            new ServiceHostBuilder()
+            var host = new ServiceHostBuilder()
                 // Add Configuration sources
                 .AddEnvironmentConfiguration()
                 .AddJsonConfiguration("logging.json", false, true)
@@ -51,10 +51,10 @@ namespace Demo2
                 .IncludeService<CortanaService>()
 
                 // Build the ServiceHost
-                .Build()
+                .Build();
 
-                // Start the ServiceHost
-                .Run();
+            // Start the ServiceHost
+            host.Run();
         }
     }
 }

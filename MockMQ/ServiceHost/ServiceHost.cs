@@ -40,7 +40,8 @@ namespace ServiceHost
             if (!typeof(IService).IsAssignableFrom(serviceType))
                 throw new ArgumentException("Type provided is not a valid IService type.", nameof(serviceType));
 
-            _services.Add((IService)Dependencies.GetService(serviceType));
+            var service = (IService) Dependencies.GetService(serviceType);
+            _services.Add(service);
         }
 
         public void Run()
@@ -64,8 +65,8 @@ namespace ServiceHost
                 try
                 {
                     var task = service.StartAsync(_cancellationTokenSource.Token);
-                    task.ConfigureAwait(true).GetAwaiter().OnCompleted(() => RemoveTask(task));
-                    _runningServices.Append(task);
+                    task.GetAwaiter().OnCompleted(() => RemoveTask(task));
+                    _runningServices.Add(task);
                 }
                 catch (Exception e)
                 {
@@ -74,12 +75,21 @@ namespace ServiceHost
             }
         }
 
+        public void RegisterServiceTask(Task task)
+        {
+            _runningServices.Add(task);
+        }
+
+        public void UnregisterServiceTask(Task task)
+        {
+            _runningServices.Remove(task);
+        }
+
         public void Stop()
         {
             if (!IsRunning) return;
 
             _logger.LogWarning("Stopping services.");
-            Console.CancelKeyPress -= CancelKeyPress;
             _cancellationTokenSource.Cancel(false); // Signal all services to stop
 
             Task.WaitAll(_runningServices.ToArray(), _options.ShutdownTimeout);
@@ -104,9 +114,12 @@ namespace ServiceHost
             }
             _runningServices.Clear();
 
+            _cancellationTokenSource.Dispose();
             _cancellationTokenSource = null;
             if (IsRunning)
                 _logger.LogError("No running services registered but services still show IsRunning=true");
+
+            Console.CancelKeyPress -= CancelKeyPress;
         }
 
         #endregion
@@ -128,11 +141,11 @@ namespace ServiceHost
 
         #region Fields
 
-        private readonly IList<IService> _services;
+        private readonly List<IService> _services;
 
         private readonly ILogger<ServiceHost> _logger;
 
-        private readonly IList<Task> _runningServices;
+        private readonly List<Task> _runningServices;
 
         private readonly ServiceHostOptions _options;
 

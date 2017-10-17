@@ -94,11 +94,10 @@ namespace ServiceHost
             return builder;
         }
 
-        public static IServiceHostBuilder AddSingleton<TBase, TConcrete>(this IServiceHostBuilder builder, TConcrete singleton)
+        public static IServiceHostBuilder AddSingleton<TBase>(this IServiceHostBuilder builder, TBase singleton)
             where TBase : class
-            where TConcrete : class, TBase
         {
-            builder.Dependencies.AddSingleton<TBase>(singleton);
+            builder.Dependencies.AddSingleton(singleton);
             return builder;
         }
 
@@ -110,11 +109,10 @@ namespace ServiceHost
             return builder;
         }
 
-        public static IServiceHostBuilder AddScoped<TBase, TConcrete>(this IServiceHostBuilder builder, Func<IServiceProvider,TConcrete> scoped)
+        public static IServiceHostBuilder AddScoped<TBase>(this IServiceHostBuilder builder, Func<IServiceProvider, TBase> scoped)
             where TBase : class
-            where TConcrete : class, TBase
         {
-            builder.Dependencies.AddScoped<TBase>(scoped);
+            builder.Dependencies.AddScoped(scoped);
             return builder;
         }
 
@@ -126,11 +124,10 @@ namespace ServiceHost
             return builder;
         }
 
-        public static IServiceHostBuilder AddTransient<TBase, TConcrete>(this IServiceHostBuilder builder, Func<IServiceProvider, TConcrete> scoped)
+        public static IServiceHostBuilder AddTransient<TBase>(this IServiceHostBuilder builder, Func<IServiceProvider, TBase> scoped)
             where TBase : class
-            where TConcrete : class, TBase
         {
-            builder.Dependencies.AddTransient<TBase>(scoped);
+            builder.Dependencies.AddTransient(scoped);
             return builder;
         }
         
@@ -142,11 +139,10 @@ namespace ServiceHost
             return builder;
         }
 
-        public static IServiceHostBuilder TryAddSingleton<TBase, TConcrete>(this IServiceHostBuilder builder, TConcrete singleton)
+        public static IServiceHostBuilder TryAddSingleton<TBase>(this IServiceHostBuilder builder, TBase singleton)
             where TBase : class
-            where TConcrete : class, TBase
         {
-            builder.Dependencies.TryAddSingleton<TBase>(singleton);
+            builder.Dependencies.TryAddSingleton(singleton);
             return builder;
         }
 
@@ -158,11 +154,10 @@ namespace ServiceHost
             return builder;
         }
 
-        public static IServiceHostBuilder TryAddScoped<TBase, TConcrete>(this IServiceHostBuilder builder, Func<IServiceProvider, TConcrete> scoped)
+        public static IServiceHostBuilder TryAddScoped<TBase>(this IServiceHostBuilder builder, Func<IServiceProvider, TBase> scoped)
             where TBase : class
-            where TConcrete : class, TBase
         {
-            builder.Dependencies.TryAddScoped<TBase>(scoped);
+            builder.Dependencies.TryAddScoped(scoped);
             return builder;
         }
 
@@ -174,11 +169,10 @@ namespace ServiceHost
             return builder;
         }
 
-        public static IServiceHostBuilder TryAddTransient<TBase, TConcrete>(this IServiceHostBuilder builder, Func<IServiceProvider, TConcrete> scoped)
+        public static IServiceHostBuilder TryAddTransient<TBase>(this IServiceHostBuilder builder, Func<IServiceProvider, TBase> scoped)
             where TBase : class
-            where TConcrete : class, TBase
         {
-            builder.Dependencies.TryAddTransient<TBase>(scoped);
+            builder.Dependencies.TryAddTransient(scoped);
             return builder;
         }
 
@@ -186,6 +180,13 @@ namespace ServiceHost
             where T : class, new()
         {
             builder.Dependencies.Configure<T>(builder.Configuration.Build().GetSection(configPath));
+            return builder;
+        }
+
+        public static IServiceHostBuilder Configure<T>(this IServiceHostBuilder builder, IConfiguration configuration)
+            where T : class, new()
+        {
+            builder.Dependencies.Configure<T>(configuration);
             return builder;
         }
 

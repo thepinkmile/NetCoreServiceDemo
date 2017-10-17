@@ -22,7 +22,7 @@ namespace ServiceHost
 
         public bool IsRunning { get; protected set; }
 
-        protected CancellationToken CancellationToken => _cts.Token;
+        protected CancellationToken CancellationToken => _cts?.Token ?? default(CancellationToken);
 
         #endregion
 
@@ -50,6 +50,7 @@ namespace ServiceHost
 
         public virtual void Dispose()
         {
+            _cts?.Dispose();
         }
 
         #endregion

@@ -35,7 +35,7 @@ namespace Demo2.Services
 
         public override async Task Execute()
         {
-            _logger.LogInformation("Alexa Executing...");
+            _logger.LogDebug("Alexa Executing...");
 
             try
             {
@@ -48,12 +48,13 @@ namespace Demo2.Services
                     // Retrieve Message
                     var message = await broker.GetMessageAsync(Options.QueueName, CancellationToken);
                     if (message == null) return;
+                    await broker.AcceptMessageAsync(message);
                     _logger.LogInformation($"Message Received by Alexa: '{message.Body}'");
 
                     // Send response
                     var delivery = message.Body.Replace("Call ", "", true, CultureInfo.InvariantCulture);
                     var response = new Message { Body = $"Call {Options.SendToQueue}" };
-                    _logger.LogInformation("Sending response");
+                    _logger.LogDebug("Alexa is sending response");
                     await broker.SendMessageAsync(delivery, response);
                 }
             }
