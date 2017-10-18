@@ -29,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win64", "win64", "{43999904
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo2", "Demo2\Demo2.csproj", "{D168D1C9-D07A-497A-92CD-05D9AA4395D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockMQ.Abstractions", "MockMQ.Abstractions\MockMQ.Abstractions.csproj", "{E47F1CC6-A2F9-4224-8551-92184D777079}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockMQ.Abstractions", "MockMQ.Abstractions\MockMQ.Abstractions.csproj", "{E47F1CC6-A2F9-4224-8551-92184D777079}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockMQ", "MockMQ\MockMQ.csproj", "{5E0E41B7-4CB0-4A9E-A9AA-EC2DD4638EAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockMQ", "MockMQ\MockMQ.csproj", "{5E0E41B7-4CB0-4A9E-A9AA-EC2DD4638EAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
