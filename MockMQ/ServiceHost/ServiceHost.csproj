@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Provides basic ServiceHost functionality that uses DI and Configurations just as you would with a WebApplication.</Description>
+    <Copyright>2017 (C) Sidrat International</Copyright>
+    <RepositoryUrl>https://github.com/thepinkmile/NetCoreServiceDemo</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
