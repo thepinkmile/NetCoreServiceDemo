@@ -286,3 +286,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+MockMQ/Demo1/tools/
+MockMQ/Demo2/tools/
